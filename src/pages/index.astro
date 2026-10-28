@@ -1,0 +1,303 @@
+---
+import Base from '../layouts/Base.astro';
+import PowerIcon from '../components/PowerIcon.astro';
+import Stars from '../components/Stars.astro';
+import Field from '../components/Field.astro';
+import { es as t, CAL_URL, GOOGLE_REVIEWS_URL } from '../i18n/es';
+
+const site = 'https://jhondeveloper.com';
+
+const person = {
+  '@type': 'Person',
+  '@id': `${site}/#jhon`,
+  name: 'Jhon Bermúdez',
+  jobTitle: 'Desarrollador web y especialista en SEO',
+  hasCredential: { '@type': 'EducationalOccupationalCredential', name: 'Scrum Master (certificación internacional)' },
+  worksFor: { '@id': `${site}/#business` },
+};
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ProfessionalService',
+    '@id': `${site}/#business`,
+    name: 'JhonDev',
+    url: `${site}/`,
+    logo: `${site}/logo-jhondev.png`,
+    description: t.meta.description,
+    address: { '@type': 'PostalAddress', addressLocality: 'Bogotá', addressCountry: 'CO' },
+    areaServed: ['Colombia', 'United States', 'Canada'],
+    founder: { '@id': `${site}/#jhon` },
+    aggregateRating: { '@type': 'AggregateRating', ratingValue: 5, reviewCount: t.reviewsCount, bestRating: 5 },
+    review: t.reviews.items.map((r) => ({
+      '@type': 'Review',
+      author: { '@type': 'Person', name: r.author },
+      datePublished: r.date,
+      reviewBody: r.text,
+      reviewRating: { '@type': 'Rating', ratingValue: 5, bestRating: 5 },
+    })),
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'Servicios para clínicas de estética, salud y bienestar',
+      itemListElement: t.composition.items.map((s) => ({
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: s.name,
+          description: s.text,
+          provider: { '@id': `${site}/#business` },
+          audience: { '@type': 'BusinessAudience', name: 'Clínicas de estética, salud y bienestar' },
+        },
+      })),
+    },
+  },
+  { '@context': 'https://schema.org', ...person },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: t.faq.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+];
+---
+<Base title={t.meta.title} description={t.meta.description} jsonLd={jsonLd}>
+  <a class="skip" href="#contenido">Saltar al contenido</a>
+
+  <header class="bar">
+    <div class="bar__inner">
+      <a href="/" class="bar__logo" aria-label="JhonDev, inicio">
+        <img src="/logo-jhondev.png" width="112" height="38" alt="JhonDev" />
+      </a>
+      <nav aria-label="Principal">
+        <ul class="bar__nav">
+          {t.nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+        </ul>
+      </nav>
+      <a class="bar__cta" href={CAL_URL} aria-label={t.cta}>
+        <PowerIcon size={16} />
+        <span>{t.cta}</span>
+      </a>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <section class="hero" aria-labelledby="h1">
+      <h1 id="h1" class="hero__title">{t.hero.h1}</h1>
+
+      <div class="stage">
+        <p class="callout callout--reviews">
+          <strong>{t.hero.calloutReviews.strong}</strong>
+          <span>{t.hero.calloutReviews.text}</span>
+        </p>
+
+        <article class="label" aria-label={t.hero.name}>
+          <div class="label__top">
+            <p class="label__brand">{t.hero.brand}</p>
+            <p class="label__name">{t.hero.name}</p>
+            <div class="label__action">
+              <a class="btn" href={CAL_URL}>
+                <PowerIcon size={22} />
+                <span>{t.cta}</span>
+              </a>
+              <a class="rating" href={GOOGLE_REVIEWS_URL} rel="noopener">
+                <Stars label="5 de 5 estrellas" />
+                <span>{t.hero.stars}</span>
+              </a>
+            </div>
+          </div>
+          <dl class="label__rows">
+            {t.hero.rows.map((r) => (
+              <div class="label__row">
+                <dt>{r.field}</dt>
+                <dd>{r.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </article>
+
+        <p class="callout callout--case">
+          <strong>{t.hero.calloutCase.strong}</strong>
+          <span>{t.hero.calloutCase.text}</span>
+        </p>
+      </div>
+    </section>
+
+    <section class="section" id="advertencias" aria-labelledby="h-warn">
+      <Field label={t.warnings.field} />
+      <div class="qa">
+        <h2 id="h-warn">{t.warnings.h2}</h2>
+        <p>{t.warnings.answer}</p>
+      </div>
+      <div class="warnings">
+        <ul>
+          {t.warnings.items.map((w) => (
+            <li>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 2.5 20h19z" /><path d="M12 9.5v5" stroke-linecap="round" /><circle cx="12" cy="17.2" r=".6" fill="currentColor" /></svg>
+              <span>{w}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" id="indicado-para" aria-labelledby="h-ind">
+      <Field label={t.indicated.field} />
+      <div class="qa">
+        <h2 id="h-ind">{t.indicated.h2}</h2>
+        <p>{t.indicated.answer}</p>
+      </div>
+      <ul class="indicated">
+        {t.indicated.items.map((i) => (
+          <li>
+            <span class="indicated__name">{i.name}</span>
+            <span class="indicated__note">{i.note}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="section" id="composicion" aria-labelledby="h-comp">
+      <Field label={t.composition.field} />
+      <div class="qa">
+        <h2 id="h-comp">{t.composition.h2}</h2>
+        <p>{t.composition.answer}</p>
+      </div>
+      <dl class="formula">
+        {t.composition.items.map((c) => (
+          <div class="formula__row">
+            <dt>
+              <span class="formula__name">{c.name}</span>
+              <span class="formula__leader" aria-hidden="true"></span>
+              <span class="formula__role">{c.role}</span>
+            </dt>
+            <dd>{c.text}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <section class="section" id="casos" aria-labelledby="h-cases">
+      <Field label={t.cases.field} />
+      <div class="qa">
+        <h2 id="h-cases">{t.cases.h2}</h2>
+        <p>{t.cases.answer}</p>
+      </div>
+      <ul class="line">
+        <li class="case case--featured">
+          <p class="case__brand">JhonDev · {t.cases.featured.kind}</p>
+          <h3 class="case__name">{t.cases.featured.name}</h3>
+          <dl class="case__rows">
+            <div><dt>Servicio</dt><dd>{t.cases.featured.service}</dd></div>
+            <div><dt>Resultado</dt><dd>{t.cases.featured.fact}</dd></div>
+          </dl>
+        </li>
+        {t.cases.items.map((c) => (
+          <li class="case">
+            <p class="case__brand">JhonDev</p>
+            <h3 class="case__name">{c.name}</h3>
+            <dl class="case__rows">
+              {c.place && <div><dt>Origen</dt><dd>{c.place}</dd></div>}
+              <div><dt>Servicio</dt><dd>{c.service}</dd></div>
+            </dl>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="section" id="modo-de-uso" aria-labelledby="h-method">
+      <Field label={t.method.field} />
+      <div class="qa">
+        <h2 id="h-method">{t.method.h2}</h2>
+        <p>{t.method.answer}</p>
+      </div>
+      <ol class="steps" data-ignition>
+        {t.method.steps.map((s, i) => {
+          const last = i === t.method.steps.length - 1;
+          return (
+            <li class:list={['step', { 'step--on': last }]} style={`--i:${i}`}>
+              <span class="step__mark" aria-hidden="true">
+                {last ? (
+                  <PowerIcon size={22} />
+                ) : (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5" /></svg>
+                )}
+              </span>
+              <span class="step__num">{i + 1}</span>
+              <span class="step__body">
+                <span class="step__name">{s.name}</span>
+                <span class="step__text">{s.text}</span>
+              </span>
+            </li>
+          );
+        })}
+      </ol>
+      <ul class="notes">
+        {t.method.notes.map((n) => <li>{n}</li>)}
+      </ul>
+    </section>
+
+    <section class="section" id="prospecto" aria-labelledby="h-rev">
+      <Field label={t.reviews.field} />
+      <div class="qa">
+        <h2 id="h-rev">{t.reviews.h2}</h2>
+        <p>{t.reviews.answer}</p>
+      </div>
+      <div class="leaflet">
+        {t.reviews.items.map((r) => (
+          <figure class="review">
+            <Stars label="5 de 5 estrellas" />
+            <blockquote><p>{r.text}</p></blockquote>
+            <figcaption>
+              <span class="review__author">{r.author}</span>
+              <span class="review__meta">{t.reviews.source} · <time datetime={r.date}>{r.dateLabel}</time></span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+      <p class="more"><a href={GOOGLE_REVIEWS_URL} rel="noopener">{t.reviews.link}</a></p>
+    </section>
+
+    <section class="close" id="agenda" aria-labelledby="h-close">
+      <div class="close__label">
+        <h2 id="h-close">{t.close.h2}</h2>
+        <p>{t.close.answer}</p>
+        <a class="btn btn--large" href={CAL_URL}>
+          <PowerIcon size={24} />
+          <span>{t.cta}</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bar bar--foot">
+    <div class="bar__inner foot">
+      <img src="/logo-jhondev.png" width="112" height="38" alt="JhonDev" loading="lazy" />
+      <p>{t.footer.line}</p>
+      <p class="foot__small">{t.footer.place} · {t.footer.local}</p>
+      <p class="foot__small">© {new Date().getFullYear()} {t.footer.rights}</p>
+    </div>
+  </footer>
+
+  <script>
+    // Encendido: los pasos se aprueban en secuencia una sola vez al llegar a la sección.
+    // Sin JS o con movimiento reducido, la sección se muestra en su estado final.
+    const list = document.querySelector<HTMLElement>('[data-ignition]');
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (list && !reduce && 'IntersectionObserver' in window) {
+      list.classList.add('is-armed');
+      const io = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((e) => e.isIntersecting)) {
+            list.classList.add('is-lit');
+            io.disconnect();
+          }
+        },
+        { threshold: 0.45 },
+      );
+      io.observe(list);
+    }
+  </script>
+</Base>

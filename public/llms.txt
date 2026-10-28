@@ -1,0 +1,15 @@
+# JhonDev
+
+> Sitios web, posicionamiento en Google (SEO) y automatización con IA para clínicas y marcas de estética, salud y bienestar. Jhon Bermúdez, desarrollador en Bogotá, Colombia, con clientas en Colombia, Estados Unidos y Canadá.
+
+- Especialidad: páginas web para clínicas estéticas, micropigmentación, tricología, dermatología, consultorios médicos y marcas de bienestar.
+- Servicios: sitio web a la medida, SEO desde el primer día, IA para WhatsApp y CRM, posicionamiento mensual en Google.
+- Proceso: diagnóstico, propuesta escrita, tres entregas que la clienta aprueba antes de cada pago, y encendido. El dominio y los accesos quedan a nombre de la clienta.
+- La clienta habla directamente con quien construye el sitio.
+- Experiencia: 3 años. Certificación internacional Scrum Master.
+- Prueba social: 36 reseñas de 5 estrellas en Google Maps.
+- Caso principal: Doctora Capilar, 10 meses de posicionamiento en Google.
+
+## Páginas
+
+- [Inicio](https://jhondeveloper.com/): servicios, casos, proceso, reseñas y cómo agendar un diagnóstico.
