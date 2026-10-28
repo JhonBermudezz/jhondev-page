@@ -22,27 +22,11 @@ export const es = {
 
   hero: {
     h1: 'Sitios web y posicionamiento en Google para clínicas de estética y salud',
-    brand: 'JhonDev · Fórmula para clínicas',
-    name: 'Sitio web que posiciona',
+    sub: 'Para que tus pacientes te encuentren en Google antes que a la competencia. Hablas directo con quien construye tu sitio.',
     stars: '36 reseñas de 5 estrellas en Google',
-    rows: [
-      {
-        field: 'Indicado para',
-        value:
-          'Clínicas y marcas de estética, salud y bienestar: micropigmentación, tricología, dermatología, consultorios médicos y bienestar.',
-      },
-      {
-        field: 'Composición',
-        value: 'Sitio web · SEO desde el día 1 · IA para WhatsApp y CRM · Posicionamiento mensual',
-      },
-      {
-        field: 'Modo de uso',
-        value: 'Diagnóstico → propuesta escrita → 3 entregas que apruebas antes de pagar → encendido',
-      },
-      { field: 'Origen', value: 'Bogotá, Colombia · Clientas en Colombia, Estados Unidos y Canadá' },
-    ],
-    calloutReviews: { strong: '36 reseñas', text: '5,0 en Google Maps' },
-    calloutCase: { strong: '10 meses', text: 'posicionando a Doctora Capilar en Google' },
+    // Foto generada con IA (Nano Banana 2 vía kie.ai). Reemplazar por foto de marca real.
+    imageAlt: 'Dueña de una clínica estética revisando su celular en su consultorio',
+    card: { strong: '10 meses', text: 'posicionando a Doctora Capilar en Google' },
   },
 
   warnings: {

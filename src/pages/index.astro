@@ -3,6 +3,8 @@ import Base from '../layouts/Base.astro';
 import PowerIcon from '../components/PowerIcon.astro';
 import Stars from '../components/Stars.astro';
 import Field from '../components/Field.astro';
+import { Picture } from 'astro:assets';
+import heroImage from '../assets/hero-clinica.png';
 import { es as t, CAL_URL, GOOGLE_REVIEWS_URL } from '../i18n/es';
 
 const site = 'https://jhondeveloper.com';
@@ -85,42 +87,34 @@ const jsonLd = [
 
   <main id="contenido">
     <section class="hero" aria-labelledby="h1">
-      <h1 id="h1" class="hero__title">{t.hero.h1}</h1>
-
-      <div class="stage">
-        <p class="callout callout--reviews">
-          <strong>{t.hero.calloutReviews.strong}</strong>
-          <span>{t.hero.calloutReviews.text}</span>
-        </p>
-
-        <article class="label" aria-label={t.hero.name}>
-          <div class="label__top">
-            <p class="label__brand">{t.hero.brand}</p>
-            <p class="label__name">{t.hero.name}</p>
-            <div class="label__action">
-              <a class="btn" href={CAL_URL}>
-                <PowerIcon size={22} />
-                <span>{t.cta}</span>
-              </a>
-              <a class="rating" href={GOOGLE_REVIEWS_URL} rel="noopener">
-                <Stars label="5 de 5 estrellas" />
-                <span>{t.hero.stars}</span>
-              </a>
-            </div>
+      <div class="hero__frame">
+        <Picture
+          src={heroImage}
+          formats={['avif', 'webp']}
+          widths={[640, 960, 1440, 2048, 2752]}
+          sizes="(max-width: 52rem) 100vw, calc(100vw - 2rem)"
+          alt={t.hero.imageAlt}
+          class="hero__img"
+          loading="eager"
+          fetchpriority="high"
+        />
+        <div class="hero__copy">
+          <h1 id="h1" class="hero__title">{t.hero.h1}</h1>
+          <p class="hero__sub">{t.hero.sub}</p>
+          <div class="hero__action">
+            <a class="btn" href={CAL_URL}>
+              <PowerIcon size={22} />
+              <span>{t.cta}</span>
+            </a>
+            <a class="rating" href={GOOGLE_REVIEWS_URL} rel="noopener">
+              <Stars label="5 de 5 estrellas" />
+              <span>{t.hero.stars}</span>
+            </a>
           </div>
-          <dl class="label__rows">
-            {t.hero.rows.map((r) => (
-              <div class="label__row">
-                <dt>{r.field}</dt>
-                <dd>{r.value}</dd>
-              </div>
-            ))}
-          </dl>
-        </article>
-
-        <p class="callout callout--case">
-          <strong>{t.hero.calloutCase.strong}</strong>
-          <span>{t.hero.calloutCase.text}</span>
+        </div>
+        <p class="hero__card">
+          <strong>{t.hero.card.strong}</strong>
+          <span>{t.hero.card.text}</span>
         </p>
       </div>
     </section>
