@@ -2,21 +2,11 @@
 import Base from '../layouts/Base.astro';
 import PowerIcon from '../components/PowerIcon.astro';
 import Stars from '../components/Stars.astro';
-import Field from '../components/Field.astro';
-import { Picture } from 'astro:assets';
+import { Image } from 'astro:assets';
 import heroImage from '../assets/hero-clinica.png';
 import { es as t, CAL_URL, GOOGLE_REVIEWS_URL } from '../i18n/es';
 
 const site = 'https://jhondeveloper.com';
-
-const person = {
-  '@type': 'Person',
-  '@id': `${site}/#jhon`,
-  name: 'Jhon Bermúdez',
-  jobTitle: 'Desarrollador web y especialista en SEO',
-  hasCredential: { '@type': 'EducationalOccupationalCredential', name: 'Scrum Master (certificación internacional)' },
-  worksFor: { '@id': `${site}/#business` },
-};
 
 const jsonLd = [
   {
@@ -40,258 +30,216 @@ const jsonLd = [
     })),
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
-      name: 'Servicios para clínicas de estética, salud y bienestar',
-      itemListElement: t.composition.items.map((s) => ({
+      name: 'Servicios de diseño y desarrollo web',
+      itemListElement: t.services.items.map((s) => ({
         '@type': 'Offer',
-        itemOffered: {
-          '@type': 'Service',
-          name: s.name,
-          description: s.text,
-          provider: { '@id': `${site}/#business` },
-          audience: { '@type': 'BusinessAudience', name: 'Clínicas de estética, salud y bienestar' },
-        },
+        itemOffered: { '@type': 'Service', name: s.name, description: s.text, provider: { '@id': `${site}/#business` } },
       })),
     },
   },
-  { '@context': 'https://schema.org', ...person },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    '@id': `${site}/#jhon`,
+    name: 'Jhon Bermúdez',
+    jobTitle: 'Desarrollador web',
+    hasCredential: { '@type': 'EducationalOccupationalCredential', name: 'Scrum Master (certificación internacional)' },
+    worksFor: { '@id': `${site}/#business` },
+  },
   {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: t.faq.map((f) => ({
-      '@type': 'Question',
-      name: f.q,
-      acceptedAnswer: { '@type': 'Answer', text: f.a },
-    })),
+    mainEntity: t.faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
   },
 ];
+
+const initials = (name: string) =>
+  name
+    .split(' ')
+    .slice(0, 2)
+    .map((w) => w[0]?.toUpperCase())
+    .join('');
 ---
 <Base title={t.meta.title} description={t.meta.description} jsonLd={jsonLd}>
   <a class="skip" href="#contenido">Saltar al contenido</a>
 
-  <header class="bar">
-    <div class="bar__inner">
-      <a href="/" class="bar__logo" aria-label="JhonDev, inicio">
+  <header class="top">
+    <div class="pill">
+      <a href="/" class="pill__logo" aria-label="JhonDev, inicio">
         <img src="/logo-jhondev.png" width="112" height="38" alt="JhonDev" />
       </a>
       <nav aria-label="Principal">
-        <ul class="bar__nav">
+        <ul class="pill__nav">
           {t.nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
         </ul>
       </nav>
-      <a class="bar__cta" href={CAL_URL} aria-label={t.cta}>
-        <PowerIcon size={16} />
-        <span>{t.cta}</span>
-      </a>
+      <a class="pill__cta" href={CAL_URL}>{t.cta}</a>
     </div>
   </header>
 
   <main id="contenido">
     <section class="hero" aria-labelledby="h1">
-      <div class="hero__frame">
-        <Picture
-          src={heroImage}
-          formats={['avif', 'webp']}
-          widths={[640, 960, 1440, 2048, 2752]}
-          sizes="(max-width: 52rem) 100vw, calc(100vw - 2rem)"
-          alt={t.hero.imageAlt}
-          class="hero__img"
-          loading="eager"
-          fetchpriority="high"
-        />
-        <div class="hero__copy">
-          <h1 id="h1" class="hero__title">{t.hero.h1}</h1>
-          <p class="hero__sub">{t.hero.sub}</p>
-          <div class="hero__action">
-            <a class="btn" href={CAL_URL}>
-              <PowerIcon size={22} />
-              <span>{t.cta}</span>
-            </a>
-            <a class="rating" href={GOOGLE_REVIEWS_URL} rel="noopener">
-              <Stars label="5 de 5 estrellas" />
-              <span>{t.hero.stars}</span>
-            </a>
+      <div class="hero__copy">
+        <a class="badge" href={GOOGLE_REVIEWS_URL} rel="noopener">
+          <Stars label="5 de 5 estrellas" />
+          <span>{t.hero.rating}</span>
+        </a>
+        <h1 id="h1" class="hero__title">
+          {t.hero.h1.before} <em>{t.hero.h1.accent}</em> {t.hero.h1.after}
+        </h1>
+        <p class="hero__sub">{t.hero.sub}</p>
+        <div class="hero__action">
+          <a class="btn" href={CAL_URL}>
+            <PowerIcon size={20} />
+            <span>{t.cta}</span>
+          </a>
+          <a class="link-arrow" href="#servicios">Ver servicios</a>
+        </div>
+      </div>
+
+      <div class="showcase" aria-hidden="true">
+        <div class="browser">
+          <div class="browser__bar">
+            <span class="browser__dots"><i></i><i></i><i></i></span>
+            <span class="browser__url">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="5" y="11" width="14" height="10" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></svg>
+              {t.hero.mock.url}
+            </span>
+            <span class="browser__tag">{t.hero.mock.tag}</span>
+          </div>
+          <div class="site">
+            <div class="site__nav"><b></b><span></span><span></span><span></span><i>{t.hero.mock.button}</i></div>
+            <div class="site__body">
+              <div class="site__copy">
+                <p class="site__title">{t.hero.mock.headline}</p>
+                <span class="site__line"></span>
+                <span class="site__line site__line--short"></span>
+                <i class="site__btn">{t.hero.mock.button}</i>
+              </div>
+              <Image src={heroImage} alt="" widths={[480, 960]} sizes="(max-width: 52rem) 60vw, 34rem" class="site__img" loading="eager" />
+            </div>
           </div>
         </div>
-        <p class="hero__card">
-          <strong>{t.hero.card.strong}</strong>
-          <span>{t.hero.card.text}</span>
-        </p>
-      </div>
-    </section>
 
-    <section class="section" id="advertencias" aria-labelledby="h-warn">
-      <Field label={t.warnings.field} />
-      <div class="qa">
-        <h2 id="h-warn">{t.warnings.h2}</h2>
-        <p>{t.warnings.answer}</p>
-      </div>
-      <div class="warnings">
-        <ul>
-          {t.warnings.items.map((w) => (
+        <div class="phone">
+          <div class="phone__screen">
+            <Image src={heroImage} alt="" width={420} class="phone__img" loading="eager" />
+            <p class="phone__title">{t.hero.mock.headline}</p>
+            <i class="phone__btn">{t.hero.mock.button}</i>
+          </div>
+        </div>
+
+        <ul class="chips">
+          {t.hero.chips.map((c) => (
             <li>
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 2.5 20h19z" /><path d="M12 9.5v5" stroke-linecap="round" /><circle cx="12" cy="17.2" r=".6" fill="currentColor" /></svg>
-              <span>{w}</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5" /></svg>
+              {c}
             </li>
           ))}
         </ul>
       </div>
     </section>
 
-    <section class="section" id="indicado-para" aria-labelledby="h-ind">
-      <Field label={t.indicated.field} />
-      <div class="qa">
-        <h2 id="h-ind">{t.indicated.h2}</h2>
-        <p>{t.indicated.answer}</p>
+    <section class="intro" aria-labelledby="h-intro">
+      <h2 id="h-intro">{t.intro.h2}</h2>
+      <p>{t.intro.text}</p>
+    </section>
+
+    <section class="block" id="servicios" aria-labelledby="h-services">
+      <div class="head">
+        <h2 id="h-services">{t.services.h2}</h2>
+        <p>{t.services.sub}</p>
       </div>
-      <ul class="indicated">
-        {t.indicated.items.map((i) => (
+      <ul class="bento">
+        {t.services.items.map((s, i) => (
+          <li class:list={['tile', `tile--${i}`]}>
+            <h3>{s.name}</h3>
+            <p>{s.text}</p>
+            <ul class="tags">{s.tags.map((tag) => <li>{tag}</li>)}</ul>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="block" id="proceso" aria-labelledby="h-process">
+      <div class="head">
+        <h2 id="h-process">{t.process.h2}</h2>
+      </div>
+      <ol class="timeline">
+        {t.process.steps.map((s, i) => (
           <li>
-            <span class="indicated__name">{i.name}</span>
-            <span class="indicated__note">{i.note}</span>
+            <span class="timeline__num">{i + 1}</span>
+            <h3>{s.name}</h3>
+            <p>{s.text}</p>
           </li>
         ))}
-      </ul>
-    </section>
-
-    <section class="section" id="composicion" aria-labelledby="h-comp">
-      <Field label={t.composition.field} />
-      <div class="qa">
-        <h2 id="h-comp">{t.composition.h2}</h2>
-        <p>{t.composition.answer}</p>
-      </div>
-      <dl class="formula">
-        {t.composition.items.map((c) => (
-          <div class="formula__row">
-            <dt>
-              <span class="formula__name">{c.name}</span>
-              <span class="formula__leader" aria-hidden="true"></span>
-              <span class="formula__role">{c.role}</span>
-            </dt>
-            <dd>{c.text}</dd>
-          </div>
-        ))}
-      </dl>
-    </section>
-
-    <section class="section" id="casos" aria-labelledby="h-cases">
-      <Field label={t.cases.field} />
-      <div class="qa">
-        <h2 id="h-cases">{t.cases.h2}</h2>
-        <p>{t.cases.answer}</p>
-      </div>
-      <ul class="line">
-        <li class="case case--featured">
-          <p class="case__brand">JhonDev · {t.cases.featured.kind}</p>
-          <h3 class="case__name">{t.cases.featured.name}</h3>
-          <dl class="case__rows">
-            <div><dt>Servicio</dt><dd>{t.cases.featured.service}</dd></div>
-            <div><dt>Resultado</dt><dd>{t.cases.featured.fact}</dd></div>
-          </dl>
-        </li>
-        {t.cases.items.map((c) => (
-          <li class="case">
-            <p class="case__brand">JhonDev</p>
-            <h3 class="case__name">{c.name}</h3>
-            <dl class="case__rows">
-              {c.place && <div><dt>Origen</dt><dd>{c.place}</dd></div>}
-              <div><dt>Servicio</dt><dd>{c.service}</dd></div>
-            </dl>
-          </li>
-        ))}
-      </ul>
-    </section>
-
-    <section class="section" id="modo-de-uso" aria-labelledby="h-method">
-      <Field label={t.method.field} />
-      <div class="qa">
-        <h2 id="h-method">{t.method.h2}</h2>
-        <p>{t.method.answer}</p>
-      </div>
-      <ol class="steps" data-ignition>
-        {t.method.steps.map((s, i) => {
-          const last = i === t.method.steps.length - 1;
-          return (
-            <li class:list={['step', { 'step--on': last }]} style={`--i:${i}`}>
-              <span class="step__mark" aria-hidden="true">
-                {last ? (
-                  <PowerIcon size={22} />
-                ) : (
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5" /></svg>
-                )}
-              </span>
-              <span class="step__num">{i + 1}</span>
-              <span class="step__body">
-                <span class="step__name">{s.name}</span>
-                <span class="step__text">{s.text}</span>
-              </span>
-            </li>
-          );
-        })}
       </ol>
-      <ul class="notes">
-        {t.method.notes.map((n) => <li>{n}</li>)}
+    </section>
+
+    <section class="block" aria-labelledby="h-value">
+      <div class="head">
+        <h2 id="h-value">{t.value.h2}</h2>
+      </div>
+      <ul class="values">
+        {t.value.items.map((v) => (
+          <li>
+            <h3>{v.name}</h3>
+            <p>{v.text}</p>
+          </li>
+        ))}
       </ul>
     </section>
 
-    <section class="section" id="prospecto" aria-labelledby="h-rev">
-      <Field label={t.reviews.field} />
-      <div class="qa">
-        <h2 id="h-rev">{t.reviews.h2}</h2>
-        <p>{t.reviews.answer}</p>
+    <section class="block" id="resenas" aria-labelledby="h-rev">
+      <div class="head head--split">
+        <div>
+          <h2 id="h-rev">{t.reviews.h2}</h2>
+          <p>{t.reviews.sub}</p>
+        </div>
+        <a class="score" href={GOOGLE_REVIEWS_URL} rel="noopener">
+          <strong>{t.reviews.score}</strong>
+          <span class="score__meta">
+            <Stars label="5 de 5 estrellas" />
+            <span>{t.reviewsCount} reseñas en Google</span>
+          </span>
+        </a>
       </div>
-      <div class="leaflet">
+      <div class="reviews">
         {t.reviews.items.map((r) => (
           <figure class="review">
             <Stars label="5 de 5 estrellas" />
             <blockquote><p>{r.text}</p></blockquote>
             <figcaption>
-              <span class="review__author">{r.author}</span>
-              <span class="review__meta">{t.reviews.source} · <time datetime={r.date}>{r.dateLabel}</time></span>
+              <span class="review__avatar" aria-hidden="true">{initials(r.author)}</span>
+              <span class="review__who">
+                <span class="review__author">{r.author}</span>
+                <span class="review__meta">{t.reviews.source} · <time datetime={r.date}>{r.dateLabel}</time></span>
+              </span>
             </figcaption>
           </figure>
         ))}
       </div>
-      <p class="more"><a href={GOOGLE_REVIEWS_URL} rel="noopener">{t.reviews.link}</a></p>
+      <p class="more"><a class="link-arrow" href={GOOGLE_REVIEWS_URL} rel="noopener">{t.reviews.link}</a></p>
     </section>
 
-    <section class="close" id="agenda" aria-labelledby="h-close">
-      <div class="close__label">
+    <section class="close" aria-labelledby="h-close">
+      <div class="close__inner">
         <h2 id="h-close">{t.close.h2}</h2>
-        <p>{t.close.answer}</p>
+        <p>{t.close.text}</p>
         <a class="btn btn--large" href={CAL_URL}>
-          <PowerIcon size={24} />
+          <PowerIcon size={22} />
           <span>{t.cta}</span>
         </a>
       </div>
     </section>
   </main>
 
-  <footer class="bar bar--foot">
-    <div class="bar__inner foot">
+  <footer class="foot">
+    <div class="foot__inner">
       <img src="/logo-jhondev.png" width="112" height="38" alt="JhonDev" loading="lazy" />
       <p>{t.footer.line}</p>
       <p class="foot__small">{t.footer.place} · {t.footer.local}</p>
       <p class="foot__small">© {new Date().getFullYear()} {t.footer.rights}</p>
     </div>
   </footer>
-
-  <script>
-    // Encendido: los pasos se aprueban en secuencia una sola vez al llegar a la sección.
-    // Sin JS o con movimiento reducido, la sección se muestra en su estado final.
-    const list = document.querySelector<HTMLElement>('[data-ignition]');
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (list && !reduce && 'IntersectionObserver' in window) {
-      list.classList.add('is-armed');
-      const io = new IntersectionObserver(
-        (entries) => {
-          if (entries.some((e) => e.isIntersecting)) {
-            list.classList.add('is-lit');
-            io.disconnect();
-          }
-        },
-        { threshold: 0.45 },
-      );
-      io.observe(list);
-    }
-  </script>
 </Base>
